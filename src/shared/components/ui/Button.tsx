@@ -31,7 +31,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       outline: "none",
       opacity: disabled ? 0.48 : 1,
       whiteSpace: "nowrap",
-      ...style,
     };
 
     const variantStyles: Record<string, React.CSSProperties> = {
@@ -51,17 +50,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        style={{ ...baseStyle, ...variantStyles[variant] }}
+        style={{ ...baseStyle, ...variantStyles[variant], ...style }}
         disabled={disabled || loading}
         onClick={onClick}
         onMouseEnter={e => {
           if (!disabled && !loading) {
-            Object.assign(e.currentTarget.style, hoverColors[variant]);
+            Object.assign(e.currentTarget.style, { ...hoverColors[variant], ...style });
           }
         }}
         onMouseLeave={e => {
           if (!disabled && !loading) {
-            Object.assign(e.currentTarget.style, variantStyles[variant]);
+            Object.assign(e.currentTarget.style, { ...variantStyles[variant], ...style });
           }
         }}
         className={`active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-offset-2 ${className}`}
