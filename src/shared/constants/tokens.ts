@@ -8,6 +8,7 @@ export const t = {
   primary400: "var(--draya-primary-400)",  // #52B6A8
   primary300: "var(--draya-primary-300)",  // #83D1C7
   primary200: "var(--draya-primary-200)",  // #B7E8E1
+  primary100: "var(--draya-primary-100)",  // #DDF5F1
   primary50:  "var(--draya-primary-50)",   // #F5FCFB
   // AI accent scale
   ai:    "var(--draya-ai)",        // #7C3AED
