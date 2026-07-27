@@ -24,20 +24,21 @@ export const StudentLayout: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: t.bgBase, direction: "rtl", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: t.bgBase, direction: "rtl", display: "flex", flexDirection: "column", overflowX: "hidden" }}>
       {/* Header Nav */}
       <header style={{
         background: t.bgSurface, borderBottom: `1px solid ${t.border}`,
-        padding: "0 20px md:0 32px", height: "64px",
+        padding: "0 24px", height: "64px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         position: "sticky", top: 0, zIndex: 500,
         boxShadow: t.shadow1,
       }}>
         {/* Brand & Hamburger Wrapper */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          {/* Hamburger trigger - ALWAYS visible */}
+          {/* Hamburger trigger - mobile only */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden"
             aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
             style={{
               background: "none", border: "none", cursor: "pointer", color: t.textSecondary,
@@ -55,6 +56,31 @@ export const StudentLayout: React.FC = () => {
             <span style={{ fontSize: "1.0625rem", fontWeight: 800, color: t.textPrimary, letterSpacing: "-0.01em" }}>درايَة</span>
           </Link>
         </div>
+
+        {/* Desktop Nav Links - desktop only */}
+        <nav className="hidden md:flex" style={{ gap: "6px", alignItems: "center" }}>
+          {items.map(item => {
+            const active = currentPath === item.path || currentPath.startsWith(item.path + "/");
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                style={{
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  color: active ? t.primary : t.textSecondary,
+                  background: active ? t.primary50 : "transparent",
+                  fontSize: "0.875rem",
+                  fontWeight: active ? 700 : 500,
+                  textDecoration: "none",
+                  transition: "all 150ms ease-in-out",
+                }}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
 
         {/* User bar */}
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -82,16 +108,20 @@ export const StudentLayout: React.FC = () => {
         </div>
       </header>
 
-      {/* Drawer Overlay Backdrop */}
+      {/* Drawer Overlay Backdrop - mobile only */}
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
+          className="md:hidden"
           style={{
             position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 998,
           }}
         />
       )}
+      
+      {/* Mobile Drawer Aside Menu - mobile only */}
       <aside
+        className="md:hidden"
         style={{
           position: "fixed", top: 0, bottom: 0, right: mobileMenuOpen ? "0px" : "-280px",
           width: "260px", background: t.bgSurface, zIndex: 999,
@@ -143,8 +173,8 @@ export const StudentLayout: React.FC = () => {
         </nav>
       </aside>
 
-      {/* Main Content */}
-      <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px sm:padding:32px", width: "100%", boxSizing: "border-box", flex: 1 }}>
+      {/* Main Content with Comfortable Responsive Padding */}
+      <main className="pt-10 pb-12 px-6 md:pt-16 md:pb-16 md:px-12 w-full max-w-7xl mx-auto flex-1 box-border">
         <Outlet />
       </main>
     </div>

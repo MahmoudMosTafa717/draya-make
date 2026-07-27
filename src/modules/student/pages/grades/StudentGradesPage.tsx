@@ -1,11 +1,11 @@
 import * as React from "react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { Star, CheckCircle, TrendingUp, TrendingDown, ArrowLeft } from "lucide-react";
-import { t } from "@/shared/constants/tokens";
-import { Card } from "@/shared/components/ui/Card";
-import { Badge } from "@/shared/components/ui/Badge";
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis
+} from "recharts";
+import { motion } from "framer-motion";
+import { Star, CheckCircle, TrendingUp, TrendingDown, ArrowLeft, Brain, Sparkles, Award, Target } from "lucide-react";
 import { Button } from "@/shared/components/ui/Button";
-import { ProgressBar } from "@/shared/components/ui/ProgressBar";
 import { SectionTitle } from "@/shared/components/ui/SectionTitle";
 
 export const StudentGradesPage: React.FC = () => {
@@ -15,112 +15,219 @@ export const StudentGradesPage: React.FC = () => {
     { name: "يوليو", avg: 87 }
   ];
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      <SectionTitle sub="استعرض كشف درجات الامتحانات والواجبات ونسب الإتقان للمهارات المختلفة المحددة بالذكاء الاصطناعي.">
-        سجل درجاتي وتحليلات الأداء
-      </SectionTitle>
+  const radarData = [
+    { subject: "رياضيات", A: 85, fullMark: 100 },
+    { subject: "فيزياء", A: 78, fullMark: 100 },
+    { subject: "كيمياء", A: 91, fullMark: 100 },
+    { subject: "أحياء", A: 82, fullMark: 100 },
+    { subject: "لغات", A: 88, fullMark: 100 }
+  ];
 
-      {/* KPI Cards */}
-      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-        {[
-          { label: "المتوسط الكلي", val: "87%", icon: <Star size={16} />, trend: "up" },
-          { label: "امتحانات مكتملة", val: "12", icon: <CheckCircle size={16} />, trend: null },
-          { label: "أعلى درجة", val: "94%", icon: <TrendingUp size={16} />, trend: null }
-        ].map(kpi => (
-          <Card key={kpi.label} style={{ padding: "18px 22px", flex: 1, minWidth: "160px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", alignItems: "center" }}>
-              <span style={{ fontSize: "0.8125rem", color: t.textSecondary, fontWeight: 600 }}>{kpi.label}</span>
-              <span style={{ background: t.primary50, color: t.primary, padding: "6px", borderRadius: "8px", display: "flex" }}>{kpi.icon}</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ fontSize: "1.625rem", fontWeight: 800, color: t.textPrimary, fontFamily: "'Cairo', sans-serif" }}>{kpi.val}</span>
-              {kpi.trend === "up" && <TrendingUp size={16} color={t.success} />}
-            </div>
-          </Card>
-        ))}
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
+  };
+
+  return (
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="flex flex-col gap-8 relative"
+      style={{ direction: "rtl" }}
+    >
+      {/* Background Blobs */}
+      <div className="absolute top-10 left-1/4 w-96 h-96 rounded-full bg-gradient-to-br from-emerald-400/20 to-sky-300/15 blur-3xl animate-float-blob pointer-events-none z-0" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-gradient-to-tr from-violet-400/20 to-pink-300/15 blur-3xl animate-float-slow pointer-events-none z-0" />
+
+      {/* Page Header */}
+      <div className="flex flex-col gap-2 z-10">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200/60 text-[#0F4F49] text-xs font-extrabold w-fit mb-1">
+          <Brain size={14} className="text-purple-600 animate-pulse" />
+          <span>تحليلات الذكاء الاصطناعي الأكاديمية</span>
+        </div>
+        <SectionTitle sub="استعرض كشف درجات الامتحانات والواجبات ونسب الإتقان للمهارات المختلفة المحددة بالذكاء الاصطناعي.">
+          سجل درجاتي وتحليلات الأداء
+        </SectionTitle>
       </div>
 
-      {/* Grid Area Chart vs Subject Averages */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* KPI Cards Row with Vivid Accents */}
+      <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-5 z-10">
+        {[
+          { label: "المتوسط الكلي", val: "87%", icon: <Star size={20} />, trend: "up", color: "text-sky-600", bg: "bg-sky-50", border: "border-sky-100" },
+          { label: "امتحانات مكتملة", val: "12 اختبار", icon: <CheckCircle size={20} />, trend: null, color: "text-purple-600", bg: "bg-purple-50", border: "border-purple-100" },
+          { label: "أعلى درجة مسجلة", val: "94%", icon: <Award size={20} />, trend: null, color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-100" }
+        ].map(kpi => (
+          <motion.div
+            key={kpi.label}
+            whileHover={{ y: -4, scale: 1.01 }}
+            className={`rounded-3xl p-6 bg-white border ${kpi.border} shadow-lg flex flex-col justify-between relative overflow-hidden group`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-extrabold text-slate-500">{kpi.label}</span>
+              <div className={`p-2.5 rounded-2xl ${kpi.bg} ${kpi.color}`}>
+                {kpi.icon}
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-3">
+              <span className="text-3xl font-black text-slate-900 font-sans">{kpi.val}</span>
+              {kpi.trend === "up" && (
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <TrendingUp size={14} /> +5%
+                </span>
+              )}
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Charts Grid: Evolution Area Chart vs Skill Radar */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 z-10">
         
-        {/* Performance Trend Area Chart */}
-        <Card style={{ padding: "20px" }} className="lg:col-span-2">
-          <h3 style={{ fontSize: "0.9375rem", fontWeight: 700, color: t.textPrimary, marginBottom: "16px" }}>منحنى تطور الأداء الأكاديمي</h3>
-          <ResponsiveContainer width="100%" height={200}>
+        {/* Performance Trend Area Chart (8 cols) */}
+        <motion.div variants={itemVariants} className="lg:col-span-8 rounded-3xl p-6 bg-white border border-slate-100 shadow-xl">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-base font-extrabold text-slate-800">منحنى تطور الأداء الأكاديمي</h3>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">تغير المتوسط التراكمي لآخر 3 أشهر</p>
+            </div>
+            <span className="text-xs font-extrabold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
+              تطور إيجابي مستمر ✨
+            </span>
+          </div>
+
+          <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={data} margin={{ left: -16 }}>
               <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={t.primary} stopOpacity={0.25} />
-                  <stop offset="95%" stopColor={t.primary} stopOpacity={0} />
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0F4F49" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke={t.border} />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: t.textSecondary }} />
-              <YAxis tick={{ fontSize: 12, fill: t.textSecondary }} domain={[0, 100]} />
-              <Tooltip contentStyle={{ background: t.bgSurface, border: `1px solid ${t.border}`, borderRadius: "8px" }} />
-              <Area type="monotone" dataKey="avg" stroke={t.primary} fill="url(#g1)" strokeWidth={2} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b", fontWeight: 600 }} />
+              <YAxis tick={{ fontSize: 12, fill: "#64748b", fontWeight: 600 }} domain={[0, 100]} />
+              <Tooltip
+                contentStyle={{
+                  background: "#0f172a",
+                  border: "none",
+                  borderRadius: "16px",
+                  color: "#fff",
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)",
+                  fontSize: "12px",
+                  fontWeight: "bold"
+                }}
+              />
+              <Area type="monotone" dataKey="avg" stroke="#0F4F49" fill="url(#areaGrad)" strokeWidth={3} />
             </AreaChart>
           </ResponsiveContainer>
-        </Card>
+        </motion.div>
 
-        {/* Results by Subject */}
-        <Card style={{ padding: "20px" }}>
-          <h3 style={{ fontSize: "0.9375rem", fontWeight: 700, color: t.textPrimary, marginBottom: "16px" }}>النتائج حسب المواد الدراسية</h3>
-          
-          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-            {[
-              { name: "رياضيات", avg: 87 },
-              { name: "فيزياء", avg: 82 },
-              { name: "كيمياء", avg: 91 }
-            ].map(s => (
-              <div key={s.name}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", fontSize: "0.8125rem" }}>
-                  <span style={{ color: t.textPrimary, fontWeight: 600 }}>{s.name}</span>
-                  <span style={{ fontWeight: 800, color: t.primary, fontFamily: "'Cairo', sans-serif" }}>{s.avg}%</span>
-                </div>
-                <ProgressBar value={s.avg} />
-              </div>
-            ))}
+        {/* Skill Radar Chart (4 cols) */}
+        <motion.div variants={itemVariants} className="lg:col-span-4 rounded-3xl p-6 bg-white border border-slate-100 shadow-xl flex flex-col justify-between">
+          <div>
+            <h3 className="text-base font-extrabold text-slate-800">خريطة توزيع المهارات</h3>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">نسب إتقان المهارات الأكاديمية</p>
           </div>
-        </Card>
+
+          <div className="w-full h-56 my-2">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+                <PolarGrid stroke="#e2e8f0" />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: "#334155", fontSize: 11, fontWeight: 700 }} />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "#94a3b8", fontSize: 10 }} />
+                <Radar name="الإتقان" dataKey="A" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.3} strokeWidth={2.5} />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="p-3 rounded-2xl bg-purple-50 border border-purple-100 text-center text-xs font-bold text-purple-900">
+            أعلى مادة في المهارات: الكيمياء (91%) 🧪
+          </div>
+        </motion.div>
 
       </div>
 
-      {/* Weak Points list */}
-      <div>
-        <SectionTitle>موضوعات ومهارات تحتاج إلى مراجعة وتطوير</SectionTitle>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      {/* Results by Subject Horizontal Grid */}
+      <motion.div variants={itemVariants} className="rounded-3xl p-6 bg-white border border-slate-100 shadow-xl z-10">
+        <h3 className="text-base font-extrabold text-slate-800 mb-4">النتائج والدرجات حسب المواد الدراسية</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { topic: "المشتقات والتكامل وتطبيقات المساحات", subject: "رياضيات", score: 42, trend: "down" },
-            { topic: "الدوائر الكهربية وقانون أوم للمغلقة", subject: "فيزياء", score: 55, trend: "up" }
-          ].map(w => (
-            <Card key={w.topic} className="flex flex-col sm:flex-row sm:items-center" style={{ padding: "18px 20px", gap: "16px" }}>
-              <div className="hidden sm:block" style={{ width: 6, height: 44, borderRadius: "3px", background: w.score < 50 ? t.error : w.score < 60 ? t.warning : t.primary, flexShrink: 0 }} />
-              
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, color: t.textPrimary, marginBottom: "4px", fontSize: "0.9375rem" }}>{w.topic}</div>
-                <div style={{ fontSize: "0.75rem", color: t.textSecondary }}>{w.subject}</div>
+            { name: "الرياضيات", avg: 87, gradient: "from-sky-500 to-indigo-600", color: "text-sky-600", bg: "bg-sky-50" },
+            { name: "الفيزياء", avg: 82, gradient: "from-purple-500 to-pink-600", color: "text-purple-600", bg: "bg-purple-50" },
+            { name: "الكيمياء", avg: 91, gradient: "from-emerald-500 to-teal-600", color: "text-emerald-600", bg: "bg-emerald-50" }
+          ].map(s => (
+            <div key={s.name} className={`p-4 rounded-2xl border border-slate-100 ${s.bg} flex flex-col gap-3`}>
+              <div className="flex justify-between items-center text-sm font-extrabold">
+                <span className="text-slate-800">{s.name}</span>
+                <span className={`${s.color} text-lg font-sans font-black`}>{s.avg}%</span>
               </div>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="sm:ml-3">
-                {w.trend === "up" ? <TrendingUp size={16} color={t.success} /> : <TrendingDown size={16} color={t.error} />}
-                <span style={{ fontSize: "1.125rem", fontWeight: 800, color: w.score < 50 ? t.error : w.score < 60 ? t.warning : t.primary, fontFamily: "'Cairo', sans-serif" }}>
-                  {w.score}%
-                </span>
+              <div className="w-full bg-white rounded-full h-2.5 overflow-hidden shadow-inner border border-slate-200/60">
+                <div className={`h-full rounded-full bg-gradient-to-r ${s.gradient}`} style={{ width: `${s.avg}%` }} />
               </div>
-
-              <Button variant="tertiary" size="sm" className="w-full sm:w-auto" onClick={() => {}}>
-                بدء المراجعة
-                <ArrowLeft size={12} style={{ marginRight: "4px" }} />
-              </Button>
-            </Card>
+            </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-    </div>
+      {/* Weak Points List */}
+      <motion.div variants={itemVariants} className="flex flex-col gap-4 z-10">
+        <SectionTitle>موضوعات ومهارات تحتاج إلى مراجعة وتطوير</SectionTitle>
+
+        <div className="flex flex-col gap-4">
+          {[
+            { topic: "المشتقات والتكامل وتطبيقات المساحات", subject: "الرياضيات", score: 42, trend: "down", badge: "تحتاج تحسين عاجل" },
+            { topic: "الدوائر الكهربية وقانون أوم للمغلقة", subject: "الفيزياء", score: 55, trend: "up", badge: "في طور التحسن" }
+          ].map(w => (
+            <motion.div
+              key={w.topic}
+              whileHover={{ x: -4 }}
+              className="rounded-3xl p-5 bg-white border border-slate-100 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-4"
+            >
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                <div className={`w-3 h-12 rounded-full ${w.score < 50 ? "bg-rose-500" : "bg-amber-500"} shrink-0`} />
+                <div>
+                  <div className="text-sm font-extrabold text-slate-800">{w.topic}</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs font-semibold text-slate-500">{w.subject}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${w.score < 50 ? "bg-rose-100 text-rose-800" : "bg-amber-100 text-amber-800"}`}>
+                      {w.badge}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex items-center gap-2">
+                  {w.trend === "up" ? <TrendingUp size={18} className="text-emerald-500" /> : <TrendingDown size={18} className="text-rose-500" />}
+                  <span className={`text-xl font-black font-sans ${w.score < 50 ? "text-rose-600" : "text-amber-600"}`}>
+                    {w.score}%
+                  </span>
+                </div>
+
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-2xl font-bold text-xs cursor-pointer flex items-center gap-1.5"
+                  onClick={() => {}}
+                >
+                  <span>بدء المراجعة التفاعلية</span>
+                  <ArrowLeft size={14} />
+                </Button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+    </motion.div>
   );
 };
+
 export default StudentGradesPage;
