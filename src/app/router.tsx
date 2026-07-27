@@ -30,8 +30,11 @@ import StudentDashboardPage from "@/modules/student/pages/dashboard/StudentDashb
 import SubscriptionPage from "@/modules/teacher/pages/subscription/SubscriptionPage";
 import ClassroomsPage from "@/modules/teacher/pages/classrooms/ClassroomsPage";
 import ClassroomDetailPage from "@/modules/teacher/pages/classroom-detail/ClassroomDetailPage";
+import GroupDetailPage from "@/modules/teacher/pages/classroom-detail/GroupDetailPage";
 import PackagesPage from "@/modules/teacher/pages/packages/PackagesPage";
 import PackageDetailPage from "@/modules/teacher/pages/package-detail/PackageDetailPage";
+import ChannelsListPage from "@/modules/teacher/pages/channels/ChannelsListPage";
+import ChannelDetailPage from "@/modules/teacher/pages/channels/ChannelDetailPage";
 
 // Sprint 3 Pages
 import BrowseTeachersPage from "@/modules/student/pages/browse-teachers/BrowseTeachersPage";
@@ -53,6 +56,7 @@ import TeacherAnalyticsPage from "@/modules/teacher/pages/analytics/TeacherAnaly
 import AIReportsPage from "@/modules/teacher/pages/reports/AIReportsPage";
 import TeacherSettingsPage from "@/modules/teacher/pages/settings/TeacherSettingsPage";
 import AIExamBuilderPage from "@/modules/teacher/pages/exam-builder/AIExamBuilderPage";
+import FeedbackPage from "@/modules/teacher/pages/feedback/FeedbackPage";
 import StudentGradesPage from "@/modules/student/pages/grades/StudentGradesPage";
 import StudentBooksPage from "@/modules/student/pages/books/StudentBooksPage";
 import StudentProfilePage from "@/modules/student/pages/profile/StudentProfilePage";
@@ -110,8 +114,14 @@ export const router = createBrowserRouter([
       { path: "subscription", element: <SubscriptionPage /> },
       { path: "classrooms", element: <ClassroomsPage /> },
       { path: "classrooms/:id", element: <ClassroomDetailPage /> },
+      { path: "classrooms/:id/groups/:groupId", element: <GroupDetailPage /> },
       { path: "packages", element: <PackagesPage /> },
       { path: "packages/:id", element: <PackageDetailPage /> },
+      { path: "channel", element: <ChannelsListPage /> },
+      { path: "channel/:id", element: <ChannelDetailPage /> },
+      { path: "feedback", element: <FeedbackPage /> },
+      { path: "channels", element: <ChannelsListPage /> },
+      { path: "channels/:id", element: <ChannelDetailPage /> },
       { path: "exam-builder", element: <AIExamBuilderPage /> },
       { path: "students", element: <TeacherStudentsPage /> },
       { path: "students/:id", element: <TeacherStudentDetailPage /> },

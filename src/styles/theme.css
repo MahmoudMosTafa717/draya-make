@@ -56,8 +56,8 @@
   --draya-bg-accent:    #EFF8F6;
 
   /* Borders */
-  --draya-border:        #DDE4E2;
-  --draya-border-strong: #C4CECB;
+  --draya-border:        #EBEFEF;
+  --draya-border-strong: #DDE4E2;
 
   /* Text */
   --draya-text-primary:    #151B19;
@@ -72,9 +72,9 @@
   --draya-info:    #3B82F6;
 
   /* Elevation Shadows — neutral tinted */
-  --draya-shadow-1: 0 1px 2px 0 rgba(21, 27, 25, 0.06);
-  --draya-shadow-2: 0 4px 12px -2px rgba(21, 27, 25, 0.10);
-  --draya-shadow-3: 0 12px 32px -4px rgba(21, 27, 25, 0.14);
+  --draya-shadow-1: none;
+  --draya-shadow-2: none;
+  --draya-shadow-3: none;
 
   /* Radius Scale */
   --draya-radius-sm:   8px;

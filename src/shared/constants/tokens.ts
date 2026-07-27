@@ -42,7 +42,7 @@ export const t = {
   error:   "var(--draya-error)",   // #EF4444
   info:    "var(--draya-info)",    // #3B82F6
   // Elevation
-  shadow1: "var(--draya-shadow-1)",
-  shadow2: "var(--draya-shadow-2)",
-  shadow3: "var(--draya-shadow-3)",
+  shadow1: "none",
+  shadow2: "none",
+  shadow3: "none",
 };
