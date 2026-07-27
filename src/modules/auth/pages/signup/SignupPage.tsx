@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { Mail, Lock, User as UserIcon, Building, Check } from "lucide-react";
+import { Mail, Lock, User as UserIcon, Building, Check, Phone, BookOpen, GraduationCap } from "lucide-react";
 import { t } from "@/shared/constants/tokens";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
@@ -14,12 +14,16 @@ export const SignupPage: React.FC = () => {
   const [passStrength, setPassStrength] = React.useState(0); // 0-3
   const [terms, setTerms] = React.useState(false);
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, setError, formState: { errors } } = useForm({
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
+      subject: "الرياضيات",
+      stage: "المرحلة الثانوية العامة",
+      studentGrade: "الصف الأول الثانوي",
       academyCode: "",
     }
   });
@@ -39,20 +43,39 @@ export const SignupPage: React.FC = () => {
   }, [passwordVal]);
 
   const onSubmit = async (data: any) => {
+    const emailLower = (data.email || "").toLowerCase();
+    const codeLower = (data.academyCode || "").toLowerCase();
+
+    // Mock validation: existing email check
+    if (emailLower.includes("exist") || emailLower.includes("dup") || emailLower === "test@draya.com") {
+      setError("email", { type: "manual", message: "هذا البريد الإلكتروني مستخدم بالفعل" });
+      toast.error("بريد إلكتروني مكرر", "هذا البريد الإلكتروني مستخدم بالفعل في حساب آخر.");
+      return;
+    }
+
+    // Mock validation: invalid enrollment code for student
+    if (role === "student" && (codeLower.includes("wrong") || codeLower.includes("invalid") || codeLower === "0000")) {
+      setError("academyCode", { type: "manual", message: "كود التسجيل غير صحيح" });
+      toast.error("كود غير صحيح", "يرجى التأكد من كود الانضمام للأكاديمية المحاول به.");
+      return;
+    }
+
     if (data.password !== data.confirmPassword) {
+      setError("confirmPassword", { type: "manual", message: "كلمتا المرور غير متطابقتين" });
       toast.error("خطأ في التحقق", "كلمتا المرور غير متطابقتين.");
       return;
     }
+
     if (!terms) {
       toast.warning("الشروط والأحكام", "يرجى الموافقة على الشروط والأحكام للمتابعة.");
       return;
     }
 
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 1200));
     setLoading(false);
 
-    toast.success("تم إنشاء الحساب بنجاح", "يرجى إكمال ملفك الشخصي للمتابعة.");
+    toast.success("تم إنشاء الحساب بنجاح", "مرحباً بك في درايَة!");
     if (role === "teacher") {
       navigate("/complete-profile");
     } else {
@@ -70,11 +93,13 @@ export const SignupPage: React.FC = () => {
           إنشاء حساب جديد
         </h1>
         <p style={{ fontSize: "0.875rem", color: t.textSecondary }}>
-          ابدأ استخدام درايَة مجاناً وفعّل منظومة الذكاء الاصطناعي اليوم.
+          {role === "teacher"
+            ? "انضم لمنظومة درايَة وأنشئ أكاديميتك الخاصة بالذكاء الاصطناعي."
+            : "سجل كطالب للوصول إلى محاضراتك وامتحاناتك التفاعلية."}
         </p>
       </div>
 
-      {/* Role Picker */}
+      {/* Role Picker Toggle */}
       <div style={{ display: "flex", background: t.bgSecondary, padding: "4px", borderRadius: "999px", border: `1px solid ${t.border}` }}>
         <button
           type="button"
@@ -118,10 +143,106 @@ export const SignupPage: React.FC = () => {
           placeholder="name@example.com"
           type="email"
           icon={<Mail size={18} />}
-          error={errors.email ? "البريد الإلكتروني مطلوب" : undefined}
+          error={errors.email ? (errors.email.message as string || "البريد الإلكتروني مطلوب") : undefined}
           required
           {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
         />
+
+        <Input
+          label="رقم الهاتف"
+          placeholder="010xxxxxxx / 011xxxxxxx / 012xxxxxxx / 015xxxxxxx"
+          type="tel"
+          icon={<Phone size={18} />}
+          error={errors.phone ? "رقم الهاتف مطلوب (11 رقم)" : undefined}
+          required
+          {...register("phone", { required: true, pattern: /^01[0125][0-9]{8}$/ })}
+        />
+
+        {/* Role Specific Fields */}
+        {role === "teacher" ? (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px", width: "100%" }}>
+              <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: t.textPrimary }}>
+                المادة العِلمية / التخصص <span style={{ color: t.primary }}>*</span>
+              </label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", color: t.textSecondary, pointerEvents: "none" }}>
+                  <BookOpen size={18} />
+                </span>
+                <select
+                  style={{
+                    width: "100%", height: "42px", padding: "0 14px 0 38px", borderRadius: "8px",
+                    border: `1.5px solid ${t.borderStrong}`, background: t.bgSurface, color: t.textPrimary,
+                    fontSize: "0.875rem", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
+                  }}
+                  {...register("subject", { required: true })}
+                >
+                  {["الرياضيات", "اللغة العربية", "اللغة الإنجليزية", "الفيزياء", "الكيمياء", "الأحياء", "العلوم العامة", "التاريخ", "الجغرافيا", "الفلسفة والمنطق", "أخرى"].map(sub => (
+                    <option key={sub} value={sub}>{sub}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px", width: "100%" }}>
+              <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: t.textPrimary }}>
+                المرحلة التعليمية <span style={{ color: t.primary }}>*</span>
+              </label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", color: t.textSecondary, pointerEvents: "none" }}>
+                  <GraduationCap size={18} />
+                </span>
+                <select
+                  style={{
+                    width: "100%", height: "42px", padding: "0 14px 0 38px", borderRadius: "8px",
+                    border: `1.5px solid ${t.borderStrong}`, background: t.bgSurface, color: t.textPrimary,
+                    fontSize: "0.875rem", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
+                  }}
+                  {...register("stage", { required: true })}
+                >
+                  {["المرحلة الثانوية العامة", "المرحلة الإعدادية", "المرحلة الابتدائية", "جامعي / ما بعد الجامعي", "متعدد المراحل"].map(stg => (
+                    <option key={stg} value={stg}>{stg}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px", width: "100%" }}>
+              <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: t.textPrimary }}>
+                المرحلة الدراسية / الصف <span style={{ color: t.primary }}>*</span>
+              </label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", color: t.textSecondary, pointerEvents: "none" }}>
+                  <GraduationCap size={18} />
+                </span>
+                <select
+                  style={{
+                    width: "100%", height: "42px", padding: "0 14px 0 38px", borderRadius: "8px",
+                    border: `1.5px solid ${t.borderStrong}`, background: t.bgSurface, color: t.textPrimary,
+                    fontSize: "0.875rem", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
+                  }}
+                  {...register("studentGrade", { required: true })}
+                >
+                  {["الصف الأول الثانوي", "الصف الثاني الثانوي", "الصف الثالث الثانوي", "المرحلة الإعدادية", "المرحلة الابتدائية", "أخرى"].map(grd => (
+                    <option key={grd} value={grd}>{grd}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <Input
+              label="كود التسجيل / الانضمام للأكاديمية"
+              placeholder="أدخل كود الأستاذ أو كود المجموعة"
+              type="text"
+              icon={<Building size={18} />}
+              error={errors.academyCode ? (errors.academyCode.message as string || "كود التسجيل غير صحيح") : undefined}
+              required
+              {...register("academyCode", { required: true })}
+            />
+          </div>
+        )}
 
         <div>
           <Input
@@ -159,20 +280,10 @@ export const SignupPage: React.FC = () => {
           placeholder="••••••••"
           type="password"
           icon={<Lock size={18} />}
-          error={errors.confirmPassword ? "تأكيد كلمة المرور مطلوب" : undefined}
+          error={errors.confirmPassword ? (errors.confirmPassword.message as string || "تأكيد كلمة المرور مطلوب") : undefined}
           required
           {...register("confirmPassword", { required: true })}
         />
-
-        {role === "student" && (
-          <Input
-            label="كود الانضمام للأكاديمية (اختياري)"
-            placeholder="أدخل الكود لمشاركة المحاضرات"
-            type="text"
-            icon={<Building size={18} />}
-            {...register("academyCode")}
-          />
-        )}
 
         {/* Terms */}
         <label style={{ display: "flex", alignItems: "flex-start", gap: "8px", cursor: "pointer", userSelect: "none", marginTop: "4px" }}>

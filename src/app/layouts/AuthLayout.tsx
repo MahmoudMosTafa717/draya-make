@@ -1,73 +1,113 @@
 import * as React from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useLocation } from "react-router";
 import { GraduationCap } from "lucide-react";
 import { t } from "@/shared/constants/tokens";
 import { P } from "@/shared/constants/photos";
 import { BlobBg } from "@/shared/components/layout/BlobBg";
 import { DecorativeScatter } from "@/shared/components/layout/DecorativeScatter";
 
-export const AuthLayout: React.FC = () => {
+export interface AuthLayoutProps {
+  brandSide?: "left" | "right";
+  children?: React.ReactNode;
+}
+
+export const AuthLayout: React.FC<AuthLayoutProps> = ({ brandSide, children }) => {
+  const location = useLocation();
+  const pathname = location.pathname.toLowerCase();
+
+  // Determine which side the branded panel should be on:
+  // On Login screen (and forgot/reset/locked/etc.), branded panel is on the LEFT and form on the RIGHT (in RTL natural).
+  // On Sign Up screens (signup, register, complete-profile, verify-email), branded panel is on the RIGHT and form on the LEFT.
+  const isSignupFlow = pathname.includes("signup") || pathname.includes("register") || pathname.includes("verify-email") || pathname.includes("complete-profile");
+  const side = brandSide ?? (isSignupFlow ? "right" : "left");
+
   return (
-    <div className="flex flex-col md:flex-row min-h-screen" style={{ background: t.bgBase, direction: "rtl" }}>
-      {/* Right Column: Form (Takes remaining space) */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-10 relative z-10" style={{ minHeight: "100vh" }}>
-        <div style={{ width: "100%", maxWidth: "400px", margin: "0 auto" }}>
-          {/* Logo */}
-          <Link to="/" style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "32px", textDecoration: "none" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "10px", background: t.primary, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <GraduationCap size={20} color="#fff" />
+    <div className="auth-shell-container">
+      {/* Form Column Panel */}
+      <div className="auth-form-panel" data-side={side}>
+        <div style={{ width: "100%", maxWidth: "420px", margin: "auto", padding: "24px 32px" }}>
+          {/* Top Branding Logo for Form Area */}
+          <Link to="/" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px", textDecoration: "none" }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: "12px",
+              background: `linear-gradient(135deg, ${t.primary} 0%, ${t.primary600} 100%)`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 4px 12px rgba(27, 109, 99, 0.25)",
+              flexShrink: 0,
+            }}>
+              <GraduationCap size={22} color="#fff" />
             </div>
             <div>
-              <div style={{ fontSize: "1.125rem", fontWeight: 800, color: t.textPrimary, letterSpacing: "-0.01em" }}>درايَة</div>
-              <div style={{ fontSize: "0.75rem", color: t.textSecondary }}>نظام التقييم الذكي للمستقبل</div>
+              <div style={{ fontSize: "1.25rem", fontWeight: 800, color: t.textPrimary, letterSpacing: "-0.01em", lineHeight: 1.2 }}>درايَة</div>
+              <div style={{ fontSize: "0.75rem", color: t.textSecondary, fontWeight: 500, marginTop: "2px" }}>نظام التقييم الذكي للمستقبل</div>
             </div>
           </Link>
 
-          <Outlet />
+          {/* Form Content */}
+          <div style={{ width: "100%" }}>
+            {children ?? <Outlet />}
+          </div>
         </div>
       </div>
 
-      {/* Left Column: Visual decoration & branding (Hidden on mobile) */}
-      <div 
-        className="hidden md:flex flex-col justify-between p-12 relative overflow-hidden"
+      {/* Branded Column Panel (Visual decoration & illustration) */}
+      <div
+        className="auth-brand-panel"
+        data-side={side}
         style={{
-          flex: 1.1,
           background: `linear-gradient(135deg, ${t.primary900} 0%, ${t.primary} 100%)`,
+          padding: "48px 56px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          overflow: "hidden",
         }}
       >
         <BlobBg variant="dark" />
         <DecorativeScatter color="#FFF" opacity={0.06} density="dense" />
-        
-        {/* Visual elements */}
-        <Link to="/" style={{ display: "flex", alignItems: "center", gap: "12px", zIndex: 1, textDecoration: "none" }}>
-          <div style={{ width: 40, height: 40, borderRadius: "12px", background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <GraduationCap size={22} color="#fff" />
+
+        {/* Brand Header */}
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: "12px", zIndex: 2, textDecoration: "none", width: "fit-content" }}>
+          <div style={{ width: 44, height: 44, borderRadius: "14px", background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>
+            <GraduationCap size={24} color="#fff" />
           </div>
-          <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#fff" }}>درايَة</span>
+          <span style={{ fontSize: "1.5rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em" }}>درايَة</span>
         </Link>
 
-        <div style={{ zIndex: 1, color: "#fff", maxWidth: "460px" }}>
-          <h1 style={{ fontSize: "2.25rem", fontWeight: 800, lineHeight: 1.25, marginBottom: "16px" }}>
+        {/* Brand Center Tagline */}
+        <div style={{ zIndex: 2, color: "#fff", maxWidth: "460px", margin: "32px 0" }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: "6px",
+            padding: "6px 14px", borderRadius: "999px",
+            background: "rgba(255,255,255,0.12)", backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.18)",
+            fontSize: "0.75rem", fontWeight: 700, color: "#fff", marginBottom: "20px"
+          }}>
+            <span>✨ الجيل الجديد من تكنولوجيا التعليم</span>
+          </div>
+          <h1 style={{ fontSize: "2.25rem", fontWeight: 800, lineHeight: 1.3, marginBottom: "16px", letterSpacing: "-0.02em" }}>
             أسهل طريقة لإنشاء وتصحيح الامتحانات بالذكاء الاصطناعي
           </h1>
-          <p style={{ fontSize: "1rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.7, fontWeight: 400 }}>
             وفر ساعات من العمل الورقي واستمتع بتحليلات دقيقة لأداء الطلاب مصممة خصيصاً لمراكز الدروس الخصوصية في مصر.
           </p>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", zIndex: 1 }}>
+        {/* Brand Bottom Preview / Mock Asset */}
+        <div style={{ display: "flex", justifyContent: side === "left" ? "flex-end" : "flex-start", zIndex: 2, transition: "justify-content 300ms ease" }}>
           <img
             src={P.heroLanding}
             alt="Draya Platform Dashboard Preview"
             style={{
-              width: "85%",
+              width: "90%",
               height: "auto",
-              maxHeight: "360px",
+              maxHeight: "340px",
               objectFit: "cover",
-              borderRadius: "16px 0 0 16px",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
-              transform: "translateY(24px) translateX(-48px)",
-              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: side === "left" ? "20px 0 0 20px" : "0 20px 20px 0",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.45)",
+              transform: side === "left" ? "translateY(24px) translateX(-56px)" : "translateY(24px) translateX(56px)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              transition: "all 650ms cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           />
         </div>
@@ -76,3 +116,4 @@ export const AuthLayout: React.FC = () => {
   );
 };
 export default AuthLayout;
+

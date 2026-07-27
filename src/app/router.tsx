@@ -15,6 +15,7 @@ import CompleteProfilePage from "@/modules/auth/pages/complete-profile/CompleteP
 import ForgotPasswordPage from "@/modules/auth/pages/forgot-password/ForgotPasswordPage";
 import ResetPasswordPage from "@/modules/auth/pages/reset-password/ResetPasswordPage";
 import LockedAccountPage from "@/modules/auth/pages/locked-account/LockedAccountPage";
+import AccessDeniedPage from "@/modules/auth/pages/access-denied/AccessDeniedPage";
 
 // Onboarding Pages
 import ChoosePlanPage from "@/modules/onboarding/pages/choose-plan/ChoosePlanPage";
@@ -153,6 +154,20 @@ export const router = createBrowserRouter([
       { path: "profile", element: <StudentProfilePage /> },
       { path: "notifications", element: <NotificationsPage /> },
     ]
+  },
+
+  // Access Denied / 403 Fallback
+  {
+    path: "/access-denied",
+    element: <AccessDeniedPage />
+  },
+  {
+    path: "/unauthorized",
+    element: <AccessDeniedPage />
+  },
+  {
+    path: "/403",
+    element: <AccessDeniedPage />
   },
 
   // 404 Fallback

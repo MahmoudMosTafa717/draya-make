@@ -6,11 +6,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   error?: string;
   icon?: React.ReactNode;
+  endIcon?: React.ReactNode;
   required?: boolean;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, placeholder, type = "text", error, icon, required, style = {}, className = "", ...props }, ref) => {
+  ({ label, placeholder, type = "text", error, icon, endIcon, required, style = {}, className = "", ...props }, ref) => {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: "4px", width: "100%", ...style }} className={className}>
         {label && (
@@ -25,6 +26,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               {icon}
             </span>
           )}
+          {endIcon && (
+            <span style={{ position: "absolute", top: "50%", left: "12px", transform: "translateY(-50%)", color: t.textSecondary, zIndex: 2 }}>
+              {endIcon}
+            </span>
+          )}
           <input
             ref={ref}
             type={type}
@@ -32,7 +38,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             style={{
               width: "100%",
               height: "42px",
-              padding: icon ? "0 40px 0 14px" : "0 14px",
+              padding: icon
+                ? (endIcon ? "0 40px 0 40px" : "0 40px 0 14px")
+                : (endIcon ? "0 14px 0 40px" : "0 14px"),
               borderRadius: "8px",
               border: `1.5px solid ${error ? t.error : t.borderStrong}`,
               background: t.bgSurface,
