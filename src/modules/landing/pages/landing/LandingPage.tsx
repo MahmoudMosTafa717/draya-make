@@ -350,18 +350,6 @@ export const LandingPage: React.FC = () => {
                   border: `1px solid ${t.border}`,
                   overflow: "hidden",
                   background: "#fff",
-                  boxShadow: t.shadow1,
-                  transition: "transform 200ms, box-shadow 200ms",
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(-6px)";
-                  el.style.boxShadow = `0 20px 48px -8px ${b.iconColor}25`;
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(0)";
-                  el.style.boxShadow = t.shadow1;
                 }}
               >
                 <div style={{
@@ -477,32 +465,45 @@ export const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {plans.map((plan, planIdx) => {
-              const borderColors = [t.border, t.primary, t.borderStrong];
               const isGradientBg = planIdx === 2; // "مؤسسات مخصص"
               const isLightFeatured = planIdx === 1; // "محترف"
 
               return (
                 <Card
                   key={plan.name}
+                  interactive
+                  onClick={() => navigate(planIdx === 0 ? "/plans/basic" : planIdx === 1 ? "/plans/pro" : "/plans/enterprise")}
                   style={{
-                    padding: "28px",
+                    padding: "32px",
                     display: "flex",
                     flexDirection: "column",
                     position: "relative",
-                    border: `1.5px solid ${borderColors[planIdx]}`,
-                    transform: isLightFeatured ? "translateY(-8px)" : "none",
-                    boxShadow: isLightFeatured ? `0 10px 30px rgba(27,109,99,0.15)` : t.shadow1,
-                    background: isGradientBg 
-                      ? `linear-gradient(135deg, ${t.primary900} 0%, ${t.primary} 100%)` 
-                      : isLightFeatured 
-                      ? "linear-gradient(135deg, #FAFEF9 0%, #F0FAF7 100%)" 
-                      : t.bgSurface,
+                    background: isGradientBg ? `linear-gradient(135deg, ${t.primary900} 0%, ${t.primary} 100%)` : isLightFeatured ? "#F0FAF7" : t.bgSurface,
+                    border: isGradientBg ? "none" : isLightFeatured ? `2px solid ${t.primary}` : `1px solid ${t.border}`,
+                    boxShadow: isLightFeatured ? t.shadow2 : isGradientBg ? t.shadow3 : t.shadow1,
                     color: isGradientBg ? "#fff" : "inherit"
                   }}
                 >
                   {isLightFeatured && (
-                    <div style={{ position: "absolute", top: "16px", left: "16px" }}>
-                      <Badge variant="primary" size="sm">موصى به</Badge>
+                    <div style={{
+                      position: "absolute",
+                      top: "-12px",
+                      left: "20px",
+                      background: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
+                      color: "#fff",
+                      padding: "6px 14px",
+                      borderRadius: "999px",
+                      fontSize: "0.6875rem",
+                      fontWeight: 900,
+                      boxShadow: "0 10px 20px -5px rgba(239, 68, 68, 0.4)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      zIndex: 10
+                    }} className="animate-pulse-glow">
+                      <Sparkles size={12} className="text-amber-200 animate-spin" style={{ animationDuration: "6s" }} />
+                      <span>موصى به 🔥</span>
                     </div>
                   )}
                   {isGradientBg && (
@@ -530,14 +531,36 @@ export const LandingPage: React.FC = () => {
                     ))}
                   </div>
 
-                  <Button
-                    variant={isLightFeatured ? "primary" : "secondary"}
-                    className="w-full"
-                    onClick={() => navigate("/signup")}
-                    style={isGradientBg ? { background: "#fff", color: t.primary, border: "none" } : undefined}
-                  >
-                    {plan.cta}
-                  </Button>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <Button
+                      variant={isLightFeatured ? "primary" : "secondary"}
+                      className="w-full cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/signup");
+                      }}
+                      style={isGradientBg ? { background: "#fff", color: t.primary, border: "none" } : undefined}
+                    >
+                      {plan.cta}
+                    </Button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const targetPlan = planIdx === 0 ? "basic" : planIdx === 1 ? "pro" : "enterprise";
+                        navigate(`/plans/${targetPlan}`);
+                      }}
+                      style={{
+                        background: "none", border: "none", cursor: "pointer",
+                        color: isGradientBg ? "#fff" : t.primary, fontSize: "0.8125rem", fontWeight: 700,
+                        textAlign: "center", paddingTop: "4px", textDecoration: "none",
+                        display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "4px"
+                      }}
+                    >
+                      استعرض تفاصيل ومميزات الباقة بالكامل ←
+                    </button>
+                  </div>
                 </Card>
               );
             })}
@@ -578,36 +601,87 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* FAQ Accordion */}
-      <section id="faq" style={{ background: t.bgSecondary, padding: "96px clamp(20px,5vw,48px)" }}>
-        <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+      <section id="faq" style={{ background: "#fff", padding: "96px clamp(20px,5vw,48px)", borderTop: `1px solid ${t.border}` }}>
+        <div style={{ maxWidth: "780px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "56px" }}>
-            <Badge variant="primary" size="md">الأسئلة الشائعة</Badge>
-            <h2 style={{ fontSize: "2rem", fontWeight: 800, color: t.textPrimary, marginTop: "16px" }}>
-              لديك أسئلة؟ لدينا إجابات
+            <div style={{ display: "inline-block", background: "#E6F3F0", color: "#0F4F49", padding: "6px 16px", borderRadius: "999px", fontSize: "0.875rem", fontWeight: 700, marginBottom: "16px" }}>
+              الأسئلة الشائعة
+            </div>
+            <h2 style={{ fontSize: "2.25rem", fontWeight: 800, color: t.textPrimary, letterSpacing: "-0.02em" }}>
+              أسئلة يسألها المعلمون دائماً
             </h2>
           </div>
           
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {faqItems.map((item, idx) => (
-              <Card key={idx} style={{ padding: "8px 16px" }}>
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {faqItems.map((item, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div
+                  key={idx}
                   style={{
-                    width: "100%", background: "none", border: "none", cursor: "pointer",
-                    padding: "16px 0", display: "flex", justifyContent: "space-between",
-                    alignItems: "center", gap: "16px"
+                    borderBottom: `1px solid ${t.border}`,
+                    padding: "24px 0",
+                    transition: "all 200ms"
                   }}
                 >
-                  <span style={{ fontSize: "1rem", fontWeight: 600, color: t.textPrimary, textAlign: "right" }}>{item.q}</span>
-                  <ChevronDown size={18} style={{ transform: openFaq === idx ? "rotate(180deg)" : "none", transition: "transform 150ms", color: t.textSecondary }} />
-                </button>
-                {openFaq === idx && (
-                  <div style={{ paddingBottom: "16px", color: t.textSecondary, fontSize: "0.9rem", lineHeight: 1.7 }}>
-                    {item.a}
-                  </div>
-                )}
-              </Card>
-            ))}
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    style={{
+                      width: "100%",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "24px",
+                      textAlign: "right",
+                      padding: 0
+                    }}
+                  >
+                    <span style={{ fontSize: "1.0625rem", fontWeight: 700, color: t.textPrimary }}>
+                      {item.q}
+                    </span>
+                    <div
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        borderRadius: "50%",
+                        background: isOpen ? t.primary : "#F0FAF7",
+                        color: isOpen ? "#fff" : t.primary,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 200ms",
+                        flexShrink: 0
+                      }}
+                    >
+                      <ChevronDown
+                        size={18}
+                        style={{
+                          transform: isOpen ? "rotate(180deg)" : "none",
+                          transition: "transform 250ms"
+                        }}
+                      />
+                    </div>
+                  </button>
+                  {isOpen && (
+                    <div
+                      style={{
+                        marginTop: "16px",
+                        paddingLeft: "60px",
+                        color: t.textSecondary,
+                        fontSize: "0.9375rem",
+                        lineHeight: 1.8,
+                        textAlign: "right"
+                      }}
+                    >
+                      {item.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

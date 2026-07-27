@@ -170,9 +170,14 @@ export const SubscriptionPage: React.FC = () => {
             </tbody>
           </table>
 
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "12px" }}>
+          <div style={{ display: "flex", justifyBetween: "space-between", gap: "8px", marginTop: "12px" }}>
+            <Button variant="secondary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/basic"; }}>تفاصيل الخطة الأساسية</Button>
+            <Button variant="primary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/pro"; }}>تفاصيل خطة المحترف</Button>
+            <Button variant="tertiary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/enterprise"; }}>تفاصيل المؤسسات</Button>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "8px" }}>
             <Button variant="secondary" onClick={() => setShowCompareModal(false)}>إغلاق المقارنة</Button>
-            <Button variant="primary" onClick={() => { setShowCompareModal(false); toast.success("تم تقديم طلب الترقية لمدير النظام"); }}>تأكيد الترقية للخطة الاحترافية</Button>
           </div>
         </div>
       </Modal>

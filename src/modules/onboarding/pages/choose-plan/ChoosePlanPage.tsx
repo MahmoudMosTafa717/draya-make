@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router";
-import { Check, Star, ShieldCheck, Heart } from "lucide-react";
+import { Check, Star, ShieldCheck, Heart, Sparkles } from "lucide-react";
 import { t } from "@/shared/constants/tokens";
 import { ACCENT, ACCENT_BG } from "@/shared/constants/accent";
 import { Button } from "@/shared/components/ui/Button";
@@ -82,67 +82,118 @@ export const ChoosePlanPage: React.FC = () => {
 
       {/* Grid plans */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-        {plans.map(plan => (
-          <Card
-            key={plan.id}
-            interactive
-            style={{
-              padding: "24px",
-              display: "flex",
-              flexDirection: "column",
-              border: plan.featured ? `2px solid ${t.primary}` : `1px solid ${t.border}`,
-              background: plan.featured ? `linear-gradient(160deg, #FAFEF9 0%, #F0FAF7 100%)` : t.bgSurface,
-              boxShadow: plan.featured ? `0 12px 30px rgba(27,109,99,0.12)` : t.shadow1,
-              transform: plan.featured ? "scale(1.02)" : "none",
-              position: "relative",
-            }}
-          >
-            {plan.featured && (
-              <div style={{ position: "absolute", top: "-14px", right: "20px" }}>
-                <Badge variant="primary" size="md">
-                  <Star size={12} fill={ACCENT.orange} color={ACCENT.orange} />
-                  الأكثر مبيعاً
-                </Badge>
-              </div>
-            )}
+        {plans.map((plan, idx) => {
+          const isGradientBg = idx === 2; // "المؤسسات الكبرى"
+          const isLightFeatured = idx === 1; // "المحترف"
 
-            <div style={{ marginBottom: "20px" }}>
-              <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: t.textPrimary, marginBottom: "8px" }}>
-                {plan.name}
-              </h3>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-                <span style={{ fontSize: "2rem", fontWeight: 900, color: t.primary, fontFamily: "'Cairo', sans-serif" }}>
-                  {billingAnnual ? plan.priceAnnual : plan.priceMonthly}
-                </span>
-                <span style={{ fontSize: "0.8125rem", color: t.textSecondary }}>جنيه / شهرياً</span>
-              </div>
-              <span style={{ fontSize: "0.75rem", color: t.textDisabled }}>
-                {billingAnnual ? `يُدفع ${plan.priceAnnual * 12} جنيه سنوياً` : "يُدفع شهرياً بشكل مرن"}
-              </span>
-            </div>
-
-            <p style={{ fontSize: "0.8125rem", color: t.textSecondary, marginBottom: "24px", lineHeight: 1.5 }}>
-              {plan.sub}
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "32px", flex: 1 }}>
-              {plan.feats.map(feat => (
-                <div key={feat} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-                  <Check size={14} color={t.primary} style={{ marginTop: "3px", flexShrink: 0 }} />
-                  <span style={{ fontSize: "0.8125rem", color: t.textPrimary, lineHeight: 1.4 }}>{feat}</span>
-                </div>
-              ))}
-            </div>
-
-            <Button
-              variant={plan.featured ? "primary" : "secondary"}
-              className="w-full"
-              onClick={() => handleSelectPlan(plan.id)}
+          return (
+            <Card
+              key={plan.id}
+              interactive
+              onClick={() => {
+                const targetPlan = plan.id === "starter" ? "basic" : plan.id === "professional" ? "pro" : "enterprise";
+                navigate(`/plans/${targetPlan}`);
+              }}
+              style={{
+                padding: "32px",
+                display: "flex",
+                flexDirection: "column",
+                position: "relative",
+                background: isGradientBg ? `linear-gradient(135deg, ${t.primary900} 0%, ${t.primary} 100%)` : isLightFeatured ? "#F0FAF7" : t.bgSurface,
+                border: isGradientBg ? "none" : isLightFeatured ? `2px solid ${t.primary}` : `1px solid ${t.border}`,
+                boxShadow: isLightFeatured ? t.shadow2 : isGradientBg ? t.shadow3 : t.shadow1,
+                color: isGradientBg ? "#fff" : "inherit"
+              }}
             >
-              {plan.cta}
-            </Button>
-          </Card>
-        ))}
+              {isLightFeatured && (
+                <div style={{
+                  position: "absolute",
+                  top: "-12px",
+                  left: "20px",
+                  background: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
+                  color: "#fff",
+                  padding: "6px 14px",
+                  borderRadius: "999px",
+                  fontSize: "0.6875rem",
+                  fontWeight: 900,
+                  boxShadow: "0 10px 20px -5px rgba(239, 68, 68, 0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  zIndex: 10
+                }} className="animate-pulse-glow">
+                  <Sparkles size={12} className="text-amber-200 animate-spin" style={{ animationDuration: "6s" }} />
+                  <span>موصى به 🔥</span>
+                </div>
+              )}
+              {isGradientBg && (
+                <div style={{ position: "absolute", top: "16px", left: "16px" }}>
+                  <Badge variant="secondary" size="sm" style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }}>مخصص</Badge>
+                </div>
+              )}
+
+              <div style={{ marginBottom: "20px" }}>
+                <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: isGradientBg ? "#fff" : t.textPrimary, marginBottom: "8px" }}>
+                  {plan.name}
+                </h3>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                  <span style={{ fontSize: "2rem", fontWeight: 900, color: isGradientBg ? "#fff" : t.primary, fontFamily: "'Cairo', sans-serif" }}>
+                    {billingAnnual ? plan.priceAnnual : plan.priceMonthly}
+                  </span>
+                  <span style={{ fontSize: "0.8125rem", color: isGradientBg ? "rgba(255,255,255,0.8)" : t.textSecondary }}>جنيه / شهرياً</span>
+                </div>
+                <span style={{ fontSize: "0.75rem", color: isGradientBg ? "rgba(255,255,255,0.6)" : t.textDisabled }}>
+                  {billingAnnual ? `يُدفع ${plan.priceAnnual * 12} جنيه سنوياً` : "يُدفع شهرياً بشكل مرن"}
+                </span>
+              </div>
+
+              <p style={{ fontSize: "0.8125rem", color: isGradientBg ? "rgba(255,255,255,0.8)" : t.textSecondary, marginBottom: "24px", lineHeight: 1.5 }}>
+                {plan.sub}
+              </p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "32px", flex: 1 }}>
+                {plan.feats.map(feat => (
+                  <div key={feat} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                    <Check size={14} color={isGradientBg ? t.primary200 : t.primary} style={{ marginTop: "3px", flexShrink: 0 }} />
+                    <span style={{ fontSize: "0.8125rem", color: isGradientBg ? "#fff" : t.textPrimary, lineHeight: 1.4 }}>{feat}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <Button
+                  variant={isLightFeatured ? "primary" : "secondary"}
+                  className="w-full cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectPlan(plan.id);
+                  }}
+                  style={isGradientBg ? { background: "#fff", color: t.primary, border: "none" } : undefined}
+                >
+                  {plan.cta}
+                </Button>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const targetPlan = plan.id === "starter" ? "basic" : plan.id === "professional" ? "pro" : "enterprise";
+                    navigate(`/plans/${targetPlan}`);
+                  }}
+                  style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    color: isGradientBg ? "#fff" : t.primary, fontSize: "0.8125rem", fontWeight: 700,
+                    textAlign: "center", paddingTop: "4px", textDecoration: "none",
+                    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "4px"
+                  }}
+                >
+                  استعرض تفاصيل ومميزات الباقة بالكامل ←
+                </button>
+              </div>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export const StudentLayout: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: t.bgBase, direction: "rtl", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: t.bgBase, direction: "rtl", display: "flex", flexDirection: "column", overflowX: "hidden" }}>
       {/* Header Nav */}
       <header style={{
         background: t.bgSurface, borderBottom: `1px solid ${t.border}`,
@@ -174,7 +174,7 @@ export const StudentLayout: React.FC = () => {
       </aside>
 
       {/* Main Content with Comfortable Responsive Padding */}
-      <main className="p-8 md:p-12 w-full max-w-7xl mx-auto flex-1 box-border">
+      <main className="pt-10 pb-12 px-6 md:pt-16 md:pb-16 md:px-12 w-full max-w-7xl mx-auto flex-1 box-border">
         <Outlet />
       </main>
     </div>

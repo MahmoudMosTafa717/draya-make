@@ -88,7 +88,7 @@ export const TeacherLayout: React.FC = () => {
   );
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: t.bgBase, direction: "rtl" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: t.bgBase, direction: "rtl", overflowX: "hidden" }}>
       
       {/* 1. Desktop Sidebar */}
       <aside 

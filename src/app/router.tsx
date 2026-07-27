@@ -20,6 +20,7 @@ import LockedAccountPage from "@/modules/auth/pages/locked-account/LockedAccount
 import ChoosePlanPage from "@/modules/onboarding/pages/choose-plan/ChoosePlanPage";
 import CheckoutPage from "@/modules/onboarding/pages/checkout/CheckoutPage";
 import SuccessPage from "@/modules/onboarding/pages/success/SuccessPage";
+import PlanDetailPage from "@/modules/onboarding/pages/plan-details/PlanDetailPage";
 
 // Dashboard Pages
 import TeacherDashboardPage from "@/modules/teacher/pages/dashboard/TeacherDashboardPage";
@@ -92,6 +93,10 @@ export const router = createBrowserRouter([
       { path: "checkout", element: <CheckoutPage /> },
       { path: "success", element: <SuccessPage /> },
     ]
+  },
+  {
+    path: "/plans/:planId",
+    element: <PlanDetailPage />
   },
 
   // Teacher Workspace Shell
