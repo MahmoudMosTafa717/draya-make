@@ -72,3 +72,27 @@ Motion should make the platform feel responsive and dynamic, never slow.
 - **Hover Transitions**: Apply smooth timing properties (`transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1)`) for card hovers, link highlights, and button expansions.
 - **Slide-In Drawers**: Sidebar navigation drawers must animate off-screen cleanly using coordinate transitions (`transition: right 0.3s ease-in-out`) rather than raw display toggles.
 - **Entrance Animations**: Use soft fade-in/slide-up keyframes (`animate-fade-in` / `translate-y-4` to `translate-y-0`) for modal entries, warning cards, and success checkmarks.
+
+---
+
+## 6. Advanced Visual Design Patterns (Added Sprint 11)
+
+These patterns must be enforced across all marketing and pricing elements of the platform:
+
+### 🌟 Premium Recommended Plan Badge (Sparkles Badge)
+- **Gradient**: `linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)` (Warm Amber to Ruby Red).
+- **Icons**: A rotating gold `Sparkles` icon next to the text.
+- **Shadow**: `0 10px 20px -5px rgba(239, 68, 68, 0.4)` (glowing red/orange shadow).
+- **Badge Text**: Strictly **"موصى به 🔥"** (Recommended).
+
+### 🧾 Flat Borderless FAQ Accordion Layout
+- **Container**: Zero card wrapper boxes; rows are borderless transparent containers separated by a thin horizontal divider: `border-bottom: 1px solid ${t.border}`.
+- **Chevron Toggle Circular Button**:
+  - **Collapsed**: Soft teal circular background (`#F0FAF7`) with primary green `ChevronDown`.
+  - **Expanded**: Solid primary green circular background (`t.primary`) with white `ChevronDown` rotated 180 degrees.
+  - **Interaction**: Row button spans full width with `justify-content: space-between` and event propagation stopped cleanly.
+
+### 🫧 Bleeding Background Blobs (Anti-Clipping Pattern)
+- **Page Container rule**: Never use `overflow-hidden` on individual page container divs (e.g. dashboard, grades list, exams page). Doing so cuts the blurred background blobs sharply, creating harsh vertical/horizontal edges.
+- **Layout Wrapper rule**: Enforce `overflow-x: hidden` exclusively at the outermost root layout shells (`StudentLayout` and `TeacherLayout`). This prevents horizontal scrollbars while letting absolute blurred elements bleed past content boundaries and fade out smoothly towards the viewport edges.
+
