@@ -96,3 +96,13 @@ These patterns must be enforced across all marketing and pricing elements of the
 - **Page Container rule**: Never use `overflow-hidden` on individual page container divs (e.g. dashboard, grades list, exams page). Doing so cuts the blurred background blobs sharply, creating harsh vertical/horizontal edges.
 - **Layout Wrapper rule**: Enforce `overflow-x: hidden` exclusively at the outermost root layout shells (`StudentLayout` and `TeacherLayout`). This prevents horizontal scrollbars while letting absolute blurred elements bleed past content boundaries and fade out smoothly towards the viewport edges.
 
+### 📐 Flat Elevation & Soft Borders (Design Shift)
+- **Shadows**: All default container elevation shadows (`shadow-1`, `shadow-2`, `shadow-3`) have been disabled (`none`). Elements rely on borders and backdrops for structure.
+- **Borders**: Standard borders (`--draya-border`) are lightened to `#EBEFEF` and strong borders to `#DDE4E2` for a delicate, premium editorial feel.
+
+### 🪞 Auth Split Shell Layout (Mirror Transition)
+- **Structure**: A two-panel layout on desktop viewports (`md` and up) containing a brand/visual panel (46% width) and a form panel (54% width).
+- **Interactive Transition**: The brand panel moves smoothly between left and right sides via CSS transitions (`transition: left 650ms cubic-bezier(0.16, 1, 0.3, 1)`) depending on the active auth state (e.g., login on one side, registration on the other), creating an elegant mirror transition.
+- **Mobile Adaptive Behavior**: Below 768px, the brand panel is completely hidden, and the form panel spans 100% of the viewport width.
+
+
