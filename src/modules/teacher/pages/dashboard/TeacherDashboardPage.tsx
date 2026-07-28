@@ -95,7 +95,7 @@ export const TeacherDashboardPage: React.FC = () => {
   if (loading) {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map(i => <Skeleton key={i} height="120px" />)}
         </div>
       </div>
@@ -140,7 +140,7 @@ export const TeacherDashboardPage: React.FC = () => {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {kpiCards.map(kpi => (
           <Card key={kpi.label} style={{ padding: "20px 22px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
@@ -177,7 +177,7 @@ export const TeacherDashboardPage: React.FC = () => {
       </div>
 
       {/* Chart + Quick Actions Sidebar */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "20px" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-5">
 
         {/* Chart Card */}
         <Card style={{ padding: "24px" }}>
@@ -358,7 +358,7 @@ export const TeacherDashboardPage: React.FC = () => {
       </div>
 
       {/* Bottom: At-Risk Students + Recent Submissions */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
         {/* At-Risk Students */}
         <Card style={{ padding: "24px" }}>

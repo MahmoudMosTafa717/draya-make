@@ -43,6 +43,23 @@ export const TeacherLayout: React.FC = () => {
     { key: "analyze", label: "التحليل" },
   ];
 
+  const getPageTitle = () => {
+    if (currentPath === "/teacher/dashboard") return "مساء الخير، أ. محمد";
+    if (currentPath.startsWith("/teacher/classrooms")) return "الفصول والمجموعات";
+    if (currentPath.startsWith("/teacher/classroom-detail")) return "تفاصيل الفصل الدراسي";
+    if (currentPath.startsWith("/teacher/packages")) return "الباقات التعليمية";
+    if (currentPath.startsWith("/teacher/package-detail")) return "تفاصيل الباقة التعليمية";
+    if (currentPath.startsWith("/teacher/feedback")) return "تقييمات الطلاب";
+    if (currentPath.startsWith("/teacher/subscription")) return "إدارة الاشتراك";
+    if (currentPath.startsWith("/teacher/reports")) return "تقارير الذكاء الاصطناعي";
+    if (currentPath.startsWith("/teacher/settings")) return "إعدادات الحساب";
+    if (currentPath.startsWith("/teacher/analytics")) return "التحليلات والأداء";
+    if (currentPath.startsWith("/teacher/students")) return "إدارة الطلاب";
+    if (currentPath.startsWith("/teacher/channels")) return "قنوات التواصل";
+    if (currentPath.startsWith("/teacher/exam-builder")) return "باني الامتحانات بالذكاء الاصطناعي";
+    return "لوحة المعلم";
+  };
+
   const handleLogout = () => {
     navigate("/");
   };
@@ -228,75 +245,84 @@ export const TeacherLayout: React.FC = () => {
 
       {/* 3. Main Content Area */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        {/* Top Header Bar — only on dashboard */}
-        {currentPath === "/teacher/dashboard" && (
-          <header style={{
-            minHeight: "92px",
-            backgroundColor: "#FFFFFF",
-            padding: "16px 36px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "16px",
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-          }}>
-            {/* Mobile hamburger menu trigger — hidden on desktop */}
-            {!isDesktop && (
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
-                style={{
-                  border: "1px solid #EAEFEF", cursor: "pointer", color: "#525E5A",
-                  width: "48px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center",
-                  borderRadius: "10px", outline: "none", background: "#FFFFFF", flexShrink: 0,
-                }}
-              >
-                <Menu size={22} />
-              </button>
+        {/* Top Header Bar — rendered on all teacher pages for consistent navigation and burger menu availability */}
+        <header style={{
+          minHeight: currentPath === "/teacher/dashboard" ? "92px" : "72px",
+          backgroundColor: "#FFFFFF",
+          padding: currentPath === "/teacher/dashboard" ? "16px 36px" : "12px 36px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "16px",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          borderBottom: `1px solid ${t.border}`,
+        }}>
+          {/* Mobile hamburger menu trigger — hidden on desktop */}
+          {!isDesktop && (
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
+              style={{
+                border: "1px solid #EAEFEF", cursor: "pointer", color: "#525E5A",
+                width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center",
+                borderRadius: "10px", outline: "none", background: "#FFFFFF", flexShrink: 0,
+              }}
+            >
+              <Menu size={20} />
+            </button>
+          )}
+
+          {/* Right Side (in RTL): Greeting or Page Title */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            {currentPath === "/teacher/dashboard" ? (
+              <>
+                <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#7E8C89", marginBottom: "2px" }}>
+                  الأحد، 20 يوليو 2026
+                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#151B19", margin: 0, lineHeight: 1.2 }}>
+                    مساء الخير، أ. محمد
+                  </h1>
+                  <span style={{ fontSize: "1.75rem", lineHeight: 1 }}>👋</span>
+                </div>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "#525E5A", margin: "2px 0 0" }}>
+                  إليك ملخص نشاط أكاديميتك اليوم
+                </p>
+              </>
+            ) : (
+              <h1 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#151B19", margin: 0 }}>
+                {getPageTitle()}
+              </h1>
             )}
+          </div>
 
-            {/* Right Side (in RTL): Greeting & Subtext */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#7E8C89", marginBottom: "2px" }}>
-                الأحد، 20 يوليو 2026
-              </span>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#151B19", margin: 0, lineHeight: 1.2 }}>
-                  مساء الخير، أ. محمد
-                </h1>
-                <span style={{ fontSize: "1.75rem", lineHeight: 1 }}>👋</span>
-              </div>
-              <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "#525E5A", margin: "2px 0 0" }}>
-                إليك ملخص نشاط أكاديميتك اليوم
-              </p>
-            </div>
+          {/* Left Side (in RTL): Bell Icon & Green Pill CTA Button */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", marginRight: "auto" }}>
+            <button
+              aria-label="الإشعارات"
+              onClick={() => navigate("/teacher/notifications")}
+              style={{
+                width: "36px", height: "36px", borderRadius: "9px",
+                border: "1px solid #EAEFEF", background: "#FFFFFF",
+                cursor: "pointer", color: "#525E5A",
+                position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "all 150ms ease",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#F5FCFB"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#FFFFFF"; }}
+            >
+              <Bell size={16} />
+              <span style={{
+                position: "absolute", top: 5, right: 5,
+                width: 7, height: 7, borderRadius: "50%",
+                background: "#EF4444", border: "2px solid #FFFFFF"
+              }} />
+            </button>
 
-            {/* Left Side (in RTL): Bell Icon & Green Pill CTA Button */}
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginRight: "auto" }}>
-              <button
-                aria-label="الإشعارات"
-                onClick={() => navigate("/teacher/notifications")}
-                style={{
-                  width: "36px", height: "36px", borderRadius: "9px",
-                  border: "1px solid #EAEFEF", background: "#FFFFFF",
-                  cursor: "pointer", color: "#525E5A",
-                  position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
-                  transition: "all 150ms ease",
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#F5FCFB"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#FFFFFF"; }}
-              >
-                <Bell size={16} />
-                <span style={{
-                  position: "absolute", top: 5, right: 5,
-                  width: 7, height: 7, borderRadius: "50%",
-                  background: "#EF4444", border: "2px solid #FFFFFF"
-                }} />
-              </button>
-
+            {currentPath === "/teacher/dashboard" && (
               <button
                 onClick={() => navigate("/teacher/reports")}
                 style={{
@@ -321,9 +347,9 @@ export const TeacherLayout: React.FC = () => {
                 <Sparkles size={15} />
                 <span>مراجعة تقارير AI</span>
               </button>
-            </div>
-          </header>
-        )}
+            )}
+          </div>
+        </header>
 
         {/* Main Page Content Container */}
         <main style={{ flex: 1, padding: "32px 40px", overflowY: "auto", background: "#FFFFFF" }}>

@@ -231,7 +231,7 @@ const DetailModalContent: React.FC<{ fb: IFeedback }> = ({ fb }) => (
     <div style={{ height: "1px", background: t.border }} />
 
     {/* ② Meta info grid */}
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div style={{ width: 32, height: 32, borderRadius: "8px", background: t.bgMuted, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <User size={15} style={{ color: t.textSecondary }} />
@@ -426,7 +426,7 @@ export const FeedbackPage: React.FC = () => {
       </SectionTitle>
 
       {/* ── KPI STAT CARDS ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {kpiCards.map(kpi => (
           <Card key={kpi.label} style={{ padding: "20px 22px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>

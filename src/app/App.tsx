@@ -7,7 +7,7 @@ export function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <Toaster position="top-right" closeButton />
+      <Toaster position="bottom-right" closeButton dir="rtl" />
     </>
   );
 }

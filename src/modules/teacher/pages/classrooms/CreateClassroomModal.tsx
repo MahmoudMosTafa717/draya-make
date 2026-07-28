@@ -127,7 +127,7 @@ export const CreateClassroomModal: React.FC<CreateClassroomModalProps> = ({
         </div>
 
         {/* Schedule setup previews */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", borderTop: `1px dashed ${t.border}`, paddingTop: "16px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" style={{ borderTop: `1px dashed ${t.border}`, paddingTop: "16px" }}>
           <Input
             label="أول امتحان مجدول"
             type="datetime-local"

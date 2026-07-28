@@ -9,6 +9,15 @@ export const StudentLayout: React.FC = () => {
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const items = [
     { label: "الرئيسية", path: "/student/dashboard" },
@@ -27,11 +36,13 @@ export const StudentLayout: React.FC = () => {
     <div style={{ minHeight: "100vh", background: t.bgBase, direction: "rtl", display: "flex", flexDirection: "column", overflowX: "hidden" }}>
       {/* Header Nav */}
       <header style={{
-        background: t.bgSurface, borderBottom: `1px solid ${t.border}`,
+        background: scrolled || mobileMenuOpen ? t.bgSurface : "transparent",
+        borderBottom: scrolled || mobileMenuOpen ? `1px solid ${t.border}` : "1px solid transparent",
+        boxShadow: scrolled || mobileMenuOpen ? t.shadow1 : "none",
         padding: "0 24px", height: "64px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         position: "sticky", top: 0, zIndex: 500,
-        boxShadow: t.shadow1,
+        transition: "background-color 250ms ease, border-color 250ms ease, box-shadow 250ms ease",
       }}>
         {/* Brand & Hamburger Wrapper */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

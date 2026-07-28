@@ -105,4 +105,25 @@ These patterns must be enforced across all marketing and pricing elements of the
 - **Interactive Transition**: The brand panel moves smoothly between left and right sides via CSS transitions (`transition: left 650ms cubic-bezier(0.16, 1, 0.3, 1)`) depending on the active auth state (e.g., login on one side, registration on the other), creating an elegant mirror transition.
 - **Mobile Adaptive Behavior**: Below 768px, the brand panel is completely hidden, and the form panel spans 100% of the viewport width.
 
+---
+
+## 7. Responsive Navigation & Docked Alerts (Added Sprint 12)
+
+These structural patterns ensure high accessibility and premium mobile-responsive layouts:
+
+### 🌊 Scroll-Activated Header Transitions
+- **Transparent First Viewport**: Sticky page headers (such as the Student Navigation Bar) must render with a transparent background, no bottom border, and no shadow when scrolled to the top (`window.scrollY <= 15` and mobile drawer closed).
+- **Scroll Transition**: Animate transitions smoothly (`transition: background 250ms ease, border 250ms ease, box-shadow 250ms ease`) to the active solid state (`t.bgSurface`, `t.border`, `t.shadow1`) as the user scrolls down the viewport.
+- **Drawer State**: Fall back to the solid surface layout instantly when the mobile navigation drawer is toggled open to prevent background overlapping.
+
+### 📱 Docked Bottom-Center Mobile Toasts
+- **RTL Alignment**: Always configure the toaster with `dir="rtl"` and default the desktop position to `bottom-right` to align toast icons, close buttons, and textual flow naturally with RTL language expectations.
+- **Docked Viewport Base**: On mobile viewports (`max-width: 639px`), override toaster placement to dock to the bottom of the visible viewport (`bottom: 12px`, `left: 12px`, `right: 12px`) with a floating container limit (`max-width: 420px`). This keeps alerts reachable and prevents them from covering headers or hamburger menus.
+
+### 📐 Breakpoint-Aware Grid Refactoring
+- **Layout Adaptability**: Avoid hardcoded column distributions like `repeat(4, 1fr)` or `1fr 320px` in layouts.
+- **Refactoring rule**: Use Tailwind breakpoint utilities (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4` or `lg:grid-cols-[1fr_320px]`) to let dashboard widgets, stats cards, and charts stack natively as viewport sizes scale down.
+- **RTL Select Input Overlaps**: When designing custom inputs or select dropdowns with absolute-positioned inline icons in RTL layouts, reserve sufficient right-hand padding (e.g., `padding-right: 40px`) to prevent selection text from overlapping with the icon.
+
+
 

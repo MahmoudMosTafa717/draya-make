@@ -142,42 +142,44 @@ export const SubscriptionPage: React.FC = () => {
             اختر الخطة المناسبة لنمو مركزك التعليمي. الترقية تطبق فوراً مع تسوية فرق السعر المالي.
           </p>
 
-          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "right", fontSize: "0.875rem" }}>
-            <thead>
-              <tr style={{ borderBottom: `2.5px solid ${t.borderStrong}`, backgroundColor: t.bgSecondary }}>
-                <th style={{ padding: "12px", fontWeight: 700 }}>الميزة</th>
-                <th style={{ padding: "12px", fontWeight: 700 }}>الأساسي</th>
-                <th style={{ padding: "12px", fontWeight: 700, color: t.primary }}>الاحترافي</th>
-                <th style={{ padding: "12px", fontWeight: 700 }}>المؤسسات</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { name: "الطلاب الأقصى", starter: "50 طالب", prof: "غير محدود", enterprise: "غير محدود" },
-                { name: "سعة التخزين سحابياً", starter: "2 جيجابايت", prof: "10 جيجابايت", enterprise: "مخصصة بالكامل" },
-                { name: "بناء الامتحانات الذكية AI", starter: "غير متاح", prof: "20 اختبار / شهر", enterprise: "غير محدود" },
-                { name: "لوحات وتقارير أولياء الأمور", starter: "بسيطة", prof: "تفاعلية بالذكاء الاصطناعي", enterprise: "تفاعلية + ربط واتساب" },
-                { name: "بوابة دفع Paymob للطلاب", starter: "نسبة سحب عالية", prof: "شروط تفضيلية", enterprise: "بوابة دفع خاصة بالسنتر" },
-                { name: "السعر الشهري (دفع سنوي)", starter: "مجاني", prof: "399 جنيه", enterprise: "مخصص" },
-              ].map((row, idx) => (
-                <tr key={idx} style={{ borderBottom: `1px solid ${t.border}` }}>
-                  <td style={{ padding: "12px", fontWeight: 600, color: t.textPrimary }}>{row.name}</td>
-                  <td style={{ padding: "12px", color: t.textSecondary }}>{row.starter}</td>
-                  <td style={{ padding: "12px", color: t.primary, fontWeight: 700 }}>{row.prof}</td>
-                  <td style={{ padding: "12px", color: t.textSecondary }}>{row.enterprise}</td>
+          <div style={{ overflowX: "auto", width: "100%" }}>
+            <table style={{ width: "100%", minWidth: "500px", borderCollapse: "collapse", textAlign: "right", fontSize: "0.875rem" }}>
+              <thead>
+                <tr style={{ borderBottom: `2.5px solid ${t.borderStrong}`, backgroundColor: t.bgSecondary }}>
+                  <th style={{ padding: "12px", fontWeight: 700 }}>الميزة</th>
+                  <th style={{ padding: "12px", fontWeight: 700 }}>الأساسي</th>
+                  <th style={{ padding: "12px", fontWeight: 700, color: t.primary }}>الاحترافي</th>
+                  <th style={{ padding: "12px", fontWeight: 700 }}>المؤسسات</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {[
+                  { name: "الطلاب الأقصى", starter: "50 طالب", prof: "غير محدود", enterprise: "غير محدود" },
+                  { name: "سعة التخزين سحابياً", starter: "2 جيجابايت", prof: "10 جيجابايت", enterprise: "مخصصة بالكامل" },
+                  { name: "بناء الامتحانات الذكية AI", starter: "غير متاح", prof: "20 اختبار / شهر", enterprise: "غير محدود" },
+                  { name: "لوحات وتقارير أولياء الأمور", starter: "بسيطة", prof: "تفاعلية بالذكاء الاصطناعي", enterprise: "تفاعلية + ربط واتساب" },
+                  { name: "بوابة دفع Paymob للطلاب", starter: "نسبة سحب عالية", prof: "شروط تفضيلية", enterprise: "بوابة دفع خاصة بالسنتر" },
+                  { name: "السعر الشهري (دفع سنوي)", starter: "مجاني", prof: "399 جنيه", enterprise: "مخصص" },
+                ].map((row, idx) => (
+                  <tr key={idx} style={{ borderBottom: `1px solid ${t.border}` }}>
+                    <td style={{ padding: "12px", fontWeight: 600, color: t.textPrimary }}>{row.name}</td>
+                    <td style={{ padding: "12px", color: t.textSecondary }}>{row.starter}</td>
+                    <td style={{ padding: "12px", color: t.primary, fontWeight: 700 }}>{row.prof}</td>
+                    <td style={{ padding: "12px", color: t.textSecondary }}>{row.enterprise}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-          <div style={{ display: "flex", justifyBetween: "space-between", gap: "8px", marginTop: "12px" }}>
-            <Button variant="secondary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/basic"; }}>تفاصيل الخطة الأساسية</Button>
-            <Button variant="primary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/pro"; }}>تفاصيل خطة المحترف</Button>
-            <Button variant="tertiary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/enterprise"; }}>تفاصيل المؤسسات</Button>
+          <div className="flex flex-col sm:flex-row gap-2 mt-3" style={{ justifyContent: "space-between" }}>
+            <Button variant="secondary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/basic"; }} className="w-full sm:w-auto">تفاصيل الخطة الأساسية</Button>
+            <Button variant="primary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/pro"; }} className="w-full sm:w-auto">تفاصيل خطة المحترف</Button>
+            <Button variant="tertiary" onClick={() => { setShowCompareModal(false); window.location.href = "/plans/enterprise"; }} className="w-full sm:w-auto">تفاصيل المؤسسات</Button>
           </div>
 
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "8px" }}>
-            <Button variant="secondary" onClick={() => setShowCompareModal(false)}>إغلاق المقارنة</Button>
+            <Button variant="secondary" onClick={() => setShowCompareModal(false)} className="w-full sm:w-auto">إغلاق المقارنة</Button>
           </div>
         </div>
       </Modal>

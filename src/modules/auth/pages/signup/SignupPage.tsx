@@ -160,7 +160,7 @@ export const SignupPage: React.FC = () => {
 
         {/* Role Specific Fields */}
         {role === "teacher" ? (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div style={{ display: "flex", flexDirection: "column", gap: "4px", width: "100%" }}>
               <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: t.textPrimary }}>
                 المادة العِلمية / التخصص <span style={{ color: t.primary }}>*</span>
@@ -171,7 +171,7 @@ export const SignupPage: React.FC = () => {
                 </span>
                 <select
                   style={{
-                    width: "100%", height: "42px", padding: "0 14px 0 38px", borderRadius: "8px",
+                    width: "100%", height: "42px", padding: "0 40px 0 32px", borderRadius: "8px",
                     border: `1.5px solid ${t.borderStrong}`, background: t.bgSurface, color: t.textPrimary,
                     fontSize: "0.875rem", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
                   }}
@@ -194,7 +194,7 @@ export const SignupPage: React.FC = () => {
                 </span>
                 <select
                   style={{
-                    width: "100%", height: "42px", padding: "0 14px 0 38px", borderRadius: "8px",
+                    width: "100%", height: "42px", padding: "0 40px 0 32px", borderRadius: "8px",
                     border: `1.5px solid ${t.borderStrong}`, background: t.bgSurface, color: t.textPrimary,
                     fontSize: "0.875rem", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
                   }}
@@ -219,7 +219,7 @@ export const SignupPage: React.FC = () => {
                 </span>
                 <select
                   style={{
-                    width: "100%", height: "42px", padding: "0 14px 0 38px", borderRadius: "8px",
+                    width: "100%", height: "42px", padding: "0 40px 0 32px", borderRadius: "8px",
                     border: `1.5px solid ${t.borderStrong}`, background: t.bgSurface, color: t.textPrimary,
                     fontSize: "0.875rem", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
                   }}

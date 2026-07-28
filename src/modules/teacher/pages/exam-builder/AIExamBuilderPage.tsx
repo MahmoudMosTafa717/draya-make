@@ -309,7 +309,7 @@ export const AIExamBuilderPage: React.FC = () => {
           <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: t.textPrimary, marginBottom: "20px" }}>توزيع الامتحان وإعدادات الأمان</h3>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Input label="تاريخ بداية الامتحان" type="date" required />
               <Input label="تاريخ انتهاء الامتحان" type="date" required />
             </div>
