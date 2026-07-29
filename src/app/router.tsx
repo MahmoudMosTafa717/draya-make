@@ -7,7 +7,7 @@ import StudentLayout from "./layouts/StudentLayout";
 import OnboardingLayout from "./layouts/OnboardingLayout";
 
 // Page Components
-import LandingPage from "@/modules/landing/pages/landing/LandingPage";
+import LandingPage from "@/modules/landing/pages/LandingPage";
 import LoginPage from "@/modules/auth/pages/login/LoginPage";
 import SignupPage from "@/modules/auth/pages/signup/SignupPage";
 import VerifyEmailPage from "@/modules/auth/pages/verify-email/VerifyEmailPage";
